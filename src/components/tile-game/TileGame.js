@@ -3,9 +3,10 @@ import ScoreGame from "../score-game/ScoreGame.js";
 export default class TileGame {
   constructor(element) {
     this.element = element;
+    this.lastActiveTile = null;
     this.scoreGame = new ScoreGame();
 
-    this.element.addEventListener('click', this.onTileClick.bind(this));
+    this.element.addEventListener("click", this.onTileClick.bind(this));
   }
 
   init() {
@@ -43,7 +44,7 @@ export default class TileGame {
       ? inactiveTiles.indexOf(currentActiveTile)
       : -1;
 
-    let randomIndex, newIndexInAllTiles, newActiveTile
+    let randomIndex, newIndexInAllTiles, newActiveTile;
 
     do {
       randomIndex = Math.floor(Math.random() * inactiveTiles.length);
@@ -58,9 +59,7 @@ export default class TileGame {
   onTileClick(e) {
     if (e.target.classList.contains("tile-active")) {
       this.scoreGame.addScore();
-      this.restartGame();
-    } else {
-      this.scoreGame.addMiss();
+      this.checkEndGame();
     }
   }
 
@@ -69,6 +68,7 @@ export default class TileGame {
     this.goblinInterval = setInterval(() => {
       this.addGoblin();
       this.scoreGame.addMiss();
+      this.checkEndGame();
     }, 1000);
   }
 
@@ -80,8 +80,18 @@ export default class TileGame {
     }
   }
 
-  restartGame() {
+  checkEndGame() {
+    if (this.scoreGame.isWinner()) {
+      this.endGame("win");
+    } else if (this.scoreGame.isGameOver()) {
+      this.endGame("lose");
+    }
+  }
+
+  endGame(result) {
     this.stopGame();
+    alert(result === "win" ? "Вы выиграли!" : "Вы проиграли!");
+    this.scoreGame.reset();
     this.startGame();
   }
 }

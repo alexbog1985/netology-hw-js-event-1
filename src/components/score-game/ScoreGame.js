@@ -11,7 +11,6 @@ export default class ScoreGame {
 
     this.scoreElement = null;
     this.missElement = null;
-
   }
 
   addScoreElement() {
@@ -26,7 +25,6 @@ export default class ScoreGame {
     this.missElement = document.createElement("li");
     this.missElement.textContent = "Промахов: " + this.miss;
     scoreGameEl.append(this.missElement);
-
   }
 
   addScore() {
@@ -39,19 +37,20 @@ export default class ScoreGame {
     this.missElement.textContent = "Промахов: " + this.miss;
   }
 
-  getScore() {
-    return this.score;
-  }
-
-  getMiss() {
-    return this.miss;
-  }
-
   isGameOver() {
     return this.miss >= this.maxMiss;
   }
 
   isWinner() {
     return this.score >= this.maxScore;
+  }
+
+  reset() {
+    this.score = 0;
+    this.maxScore = 5;
+    this.miss = 0;
+    this.maxMiss = 5;
+    this.missElement.textContent = "Промахов: " + this.miss;
+    this.scoreElement.textContent = "Попаданий: " + this.score;
   }
 }
