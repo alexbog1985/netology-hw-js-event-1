@@ -8,6 +8,13 @@ export default class TileGame {
     this.element.addEventListener('click', this.onTileClick.bind(this));
   }
 
+  init() {
+    this.addTile();
+    this.scoreGame.addScoreElement();
+
+    this.startGame();
+  }
+
   addTile() {
     for (let i = 1; i <= 16; i++) {
       const tile = document.createElement("div");
@@ -49,22 +56,32 @@ export default class TileGame {
   }
 
   onTileClick(e) {
-    console.log(e);
+    if (e.target.classList.contains("tile-active")) {
+      this.scoreGame.addScore();
+      this.restartGame();
+    } else {
+      this.scoreGame.addMiss();
+    }
   }
 
   startGame() {
-    this.addTile();
-    this.scoreGame.addScoreElement();
-
+    this.addGoblin();
     this.goblinInterval = setInterval(() => {
       this.addGoblin();
+      this.scoreGame.addMiss();
     }, 1000);
   }
 
   stopGame() {
     if (this.goblinInterval) {
+      this.clearTiles();
       clearInterval(this.goblinInterval);
       this.goblinInterval = null;
     }
+  }
+
+  restartGame() {
+    this.stopGame();
+    this.startGame();
   }
 }

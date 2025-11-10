@@ -8,6 +8,10 @@ export default class ScoreGame {
     this.maxScore = 5;
     this.miss = 0;
     this.maxMiss = 5;
+
+    this.scoreElement = null;
+    this.missElement = null;
+
   }
 
   addScoreElement() {
@@ -15,22 +19,24 @@ export default class ScoreGame {
     scoreGameEl.classList.add("score-list");
     this.element.appendChild(scoreGameEl);
 
-    const scoreElement = document.createElement("li");
-    scoreElement.textContent = "Попаданий: " + this.score;
-    scoreGameEl.append(scoreElement);
+    this.scoreElement = document.createElement("li");
+    this.scoreElement.textContent = "Попаданий: " + this.score;
+    scoreGameEl.append(this.scoreElement);
 
-    const missElement = document.createElement("li");
-    missElement.textContent = "Промахов: " + this.miss;
-    scoreGameEl.append(missElement);
+    this.missElement = document.createElement("li");
+    this.missElement.textContent = "Промахов: " + this.miss;
+    scoreGameEl.append(this.missElement);
 
   }
 
   addScore() {
     this.score += 1;
+    this.scoreElement.textContent = "Попаданий: " + this.score;
   }
 
   addMiss() {
     this.miss += 1;
+    this.missElement.textContent = "Промахов: " + this.miss;
   }
 
   getScore() {
