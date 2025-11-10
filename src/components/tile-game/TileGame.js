@@ -1,6 +1,9 @@
+import ScoreGame from "../score-game/ScoreGame.js";
+
 export default class TileGame {
   constructor(element) {
     this.element = element;
+    this.scoreGame = new ScoreGame();
 
     this.element.addEventListener('click', this.onTileClick.bind(this));
   }
@@ -51,6 +54,8 @@ export default class TileGame {
 
   startGame() {
     this.addTile();
+    this.scoreGame.addScoreElement();
+
     this.goblinInterval = setInterval(() => {
       this.addGoblin();
     }, 1000);
