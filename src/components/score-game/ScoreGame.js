@@ -1,4 +1,4 @@
-import "./score-game.css"
+import "./score-game.css";
 
 export default class ScoreGame {
   constructor() {
