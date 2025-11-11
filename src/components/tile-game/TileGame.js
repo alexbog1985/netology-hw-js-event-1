@@ -34,7 +34,7 @@ export default class TileGame {
   addGoblin() {
     const tiles = Array.from(this.element.querySelectorAll(".tile"));
     const availableTiles = this.lastActiveTile
-      ? tiles.filter(tile => tile !== this.lastActiveTile)
+      ? tiles.filter((tile) => tile !== this.lastActiveTile)
       : tiles;
 
     if (availableTiles.length === 0) return;
