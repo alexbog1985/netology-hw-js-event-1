@@ -33,33 +33,26 @@ export default class TileGame {
 
   addGoblin() {
     const tiles = Array.from(this.element.querySelectorAll(".tile"));
-    const inactiveTiles = tiles.filter(
-      (tile) => !tile.classList.contains("tile-active"),
-    );
+    const availableTiles = this.lastActiveTile
+      ? tiles.filter(tile => tile !== this.lastActiveTile)
+      : tiles;
 
-    const currentActiveTile = tiles.find((tile) =>
-      tile.classList.contains("tile-active"),
-    );
-    const currentIndexInAllTiles = currentActiveTile
-      ? inactiveTiles.indexOf(currentActiveTile)
-      : -1;
+    if (availableTiles.length === 0) return;
 
-    let randomIndex, newIndexInAllTiles, newActiveTile;
-
-    do {
-      randomIndex = Math.floor(Math.random() * inactiveTiles.length);
-      newActiveTile = inactiveTiles[randomIndex];
-      newIndexInAllTiles = tiles.indexOf(newActiveTile);
-    } while (newIndexInAllTiles === currentIndexInAllTiles);
+    const randomIndex = Math.floor(Math.random() * availableTiles.length);
+    const newActiveTile = availableTiles[randomIndex];
 
     this.clearTiles();
-    inactiveTiles[randomIndex].classList.add("tile-active");
+    newActiveTile.classList.add("tile-active");
+
+    this.lastActiveTile = newActiveTile;
   }
 
   onTileClick(e) {
     if (e.target.classList.contains("tile-active")) {
       this.scoreGame.addScore();
       this.checkEndGame();
+      this.restartGame();
     }
   }
 
@@ -77,6 +70,14 @@ export default class TileGame {
       this.clearTiles();
       clearInterval(this.goblinInterval);
       this.goblinInterval = null;
+    }
+  }
+
+  restartGame() {
+    if (this.goblinInterval) {
+      this.clearTiles();
+      clearInterval(this.goblinInterval);
+      this.startGame();
     }
   }
 
